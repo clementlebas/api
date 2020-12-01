@@ -32,6 +32,14 @@ public class User {
         return userName;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
