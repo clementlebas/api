@@ -8,28 +8,22 @@ import java.util.Objects;
 @Entity
 public class User {
 
-    private @Id
-    @GeneratedValue
-    Long id;
-    private String userName;
+    @Id @GeneratedValue(strategy=GenerationType.AUTO) long id;
+    @Column(name = "firstname")
+    private String firstname ;
     private String password;
     private String token;
 
     private User() {}
 
-    public User(long id, String userName, String password, String token) {
-        this.id = id;
-        this.userName = userName;
+    public User(String userName, String password, String token) {
+        this.firstname  = firstname;
         this.password = password;
         this.token = token;
     }
 
-    public long getId() {
-        return id;
-    }
-
     public String getUser() {
-        return userName;
+        return firstname;
     }
 
     public String getPassword() {
@@ -46,7 +40,7 @@ public class User {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return Objects.equals(id, user.id) &&
-                Objects.equals(user, user.userName) &&
+                Objects.equals(user, user.firstname ) &&
                 Objects.equals(user, user.password) &&
                 Objects.equals(user, user.token);
     }
@@ -55,7 +49,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", userName='" + userName + '\'' +
+                ", userName='" + firstname + '\'' +
                 ", password='" + password + '\'' +
                 ", token='" + token + '\'' +
                 '}';
