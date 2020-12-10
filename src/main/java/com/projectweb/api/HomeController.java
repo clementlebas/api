@@ -2,7 +2,9 @@ package com.projectweb.api;
 
 //import java.util.concurrent.atomic.AtomicLong;
 
+import ch.qos.logback.classic.Logger;
 import org.apache.maven.artifact.repository.Authentication;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,19 +23,37 @@ public class HomeController {
     @Autowired
     private UserRepository repository;
 
-    @GetMapping(value = "/api/login")
+    @GetMapping(value = "/api")
     public String index() {
         return "index";
     }
 
-    @RequestMapping(value = "/api/inscription")
-    @ResponseBody
-    public String someMethod(@RequestParam("uname") String uname, String password) {
-        System.out.println(uname);
-        repository.save(new User(uname, password, "vdsnf"));
-        System.out.println(repository.findByFirstnameEquals(uname));
+    @RequestMapping(value = "/api/login")
+    public String connection(String uname, String password) {
+        for (User u : repository.findByUserName(uname)) {
 
-        return "inscription" + " " + "Utilisateur créé : " + uname;
+            if (u.getPassword().equals(password)) {
+                System.out.println(u.getUser() + " connection");
+                return "sondage";
+            }
+        }
+        return "index";
+    }
+
+    @RequestMapping(value = "/api/inscription")
+    public ModelAndView someMethod(String uname, String password) {
+        ModelAndView modelAndView = new ModelAndView("inscription");
+
+        for (User u : repository.findByUserName(uname)) {
+            if (u.getUser().equals(uname)) {
+                modelAndView.addObject("message", "L'utilisateur existe déja !");
+                System.out.println(u.getUser() + " already exist");
+                return modelAndView;
+            }
+        }
+        modelAndView.addObject("message", "Utilisateur créé ! Vous pouvez vous connecter");
+        repository.save(new User(uname, password, "vdsnf"));
+        return modelAndView;
     }
 
     //@PostMapping(value="/api/login")

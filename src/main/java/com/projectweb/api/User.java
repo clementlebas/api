@@ -9,21 +9,21 @@ import java.util.Objects;
 public class User {
 
     @Id @GeneratedValue(strategy=GenerationType.AUTO) long id;
-    @Column(name = "firstname")
-    private String firstname ;
+    @Column(name = "userName")
+    private String userName ;
     private String password;
     private String token;
 
     private User() {}
 
     public User(String userName, String password, String token) {
-        this.firstname  = firstname;
+        this.userName  = userName;
         this.password = password;
         this.token = token;
     }
 
     public String getUser() {
-        return firstname;
+        return userName;
     }
 
     public String getPassword() {
@@ -40,7 +40,7 @@ public class User {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return Objects.equals(id, user.id) &&
-                Objects.equals(user, user.firstname ) &&
+                Objects.equals(user, user.userName) &&
                 Objects.equals(user, user.password) &&
                 Objects.equals(user, user.token);
     }
@@ -49,7 +49,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", userName='" + firstname + '\'' +
+                ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", token='" + token + '\'' +
                 '}';
