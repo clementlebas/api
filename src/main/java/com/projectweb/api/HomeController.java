@@ -1,24 +1,29 @@
 package com.projectweb.api;
 
-//import java.util.concurrent.atomic.AtomicLong;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import ch.qos.logback.classic.Logger;
-import org.apache.maven.artifact.repository.Authentication;
-import org.slf4j.LoggerFactory;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
+
 
 @Controller
 public class HomeController {
+
+
+    private static final int EXPIRY_DAYS = 90;
 
     @Autowired
     private UserRepository repository;
@@ -28,17 +33,62 @@ public class HomeController {
         return "index";
     }
 
-    @RequestMapping(value = "/api/login")
-    public String connection(String uname, String password) {
+    @GetMapping(value = "/api/sondage")
+    public String getSondage() {
+
+        return "sondage";
+    }
+
+    @RequestMapping(value = "/api/login",  method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Message generateToken(@RequestBody Map<String, Object> payload) {
+        String uname = payload.get("uname").toString();
+        String password = payload.get("password").toString();
+
+        System.out.println(uname + " uname");
+        System.out.println(password + " password");
+        SecurityContext securityContext;
+
+        Authentication auth = new UsernamePasswordAuthenticationToken(uname, password);
+        auth.isAuthenticated();
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        System.out.println("auth" + auth);
+
         for (User u : repository.findByUserName(uname)) {
 
             if (u.getPassword().equals(password)) {
                 System.out.println(u.getUser() + " connection");
-                return "sondage";
+
+
+                JSONObject jwtPayload = new JSONObject();
+                jwtPayload.put("status", 0);
+
+                JSONArray audArray = new JSONArray();
+                audArray.put("admin");
+                jwtPayload.put("sub", u.getUser());
+
+                jwtPayload.put("aud", audArray);
+                LocalDateTime ldt = LocalDateTime.now().plusDays(EXPIRY_DAYS);
+                jwtPayload.put("exp", ldt.toEpochSecond(ZoneOffset.UTC));
+
+                JWebToken token = new JWebToken(jwtPayload);
+                u.setToken(token.toString());
+
+                token.isValid();
+
+                System.out.println(token);
+
+                return new Message(u.getToken());
             }
         }
-        return "index";
+        return new Message("Not found");
     }
+
+    /*@RequestMapping(value = "/api/login")
+    public String connection(String uname, String password) {
+        return "sondage";
+    }*/
+
 
     @RequestMapping(value = "/api/inscription")
     public ModelAndView someMethod(String uname, String password) {
@@ -52,7 +102,7 @@ public class HomeController {
             }
         }
         modelAndView.addObject("message", "Utilisateur créé ! Vous pouvez vous connecter");
-        repository.save(new User(uname, password, "vdsnf"));
+        repository.save(new User(uname, password));
         return modelAndView;
     }
 

@@ -8,7 +8,7 @@ class Inscrption extends React.Component {
   }
 
   validatePassword() {
-    const password = document.getElementById("password");
+    const password = document.getElementById("createpassword");
     const confirm_password = document.getElementById("confirm_password");
     if (password.value != confirm_password.value) {
       confirm_password.setCustomValidity("Passwords Don't Match");
@@ -65,13 +65,13 @@ class Inscrption extends React.Component {
               type="text"
               placeholder="Entrer un nom d'utilisateur"
               name="uname"
-              id="uname"
+              id="createuname"
               required
             />
             <input
               type="password"
               placeholder="Password"
-              id="password"
+              id="createpassword"
               name="password"
               onChange={this.validatePassword}
               required

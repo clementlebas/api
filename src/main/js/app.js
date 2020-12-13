@@ -30,10 +30,64 @@ class App extends React.Component {
     });
   }
 
+  onSubmit() {
+    const myHeaders = new Headers({
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "Access-Control-Allow-Headers": "*",
+    });
+
+    const formData = new FormData();
+
+    const uname = document.getElementById("uname").value;
+    const password = document.getElementById("password").value;
+
+    formData.append("uname", uname);
+    formData.append("password", password);
+
+    fetch("/api/login/", {
+      method: "POST",
+      headers: myHeaders,
+      credentials: "same-origin",
+      mode: "same-origin",
+      body: JSON.stringify({ uname: uname, password: password }),
+    }).then((response) => {
+      if (response.ok) {
+        response.json().then(function (data) {
+          console.log("login data", data);
+          const myHeaders = new Headers({
+            "Content-Type": "text/html; charset=utf-8",
+            Accept: "application/json, text/javascript, */*; q=0.01",
+            Authorization: `Bearer ${data.token}`,
+          });
+
+          const params = {
+            method: "GET",
+            headers: myHeaders,
+          };
+          fetch("/api/sondage", params).then((response) => {
+            if (response.ok) {
+              response.json().then(function (data) {
+                console.log("data", data);
+              });
+              window.location = "http://localhost:4000/api/sondage/";
+              // this.setState({ users: response.json() });
+              // console.log("users", this.state.users);
+            }
+          });
+        });
+        // this.setState({ users: response.json() });
+        // console.log("users", this.state.users);
+      }
+    });
+  }
+
   render() {
     return (
       <div className="app">
-        <form action="/api/login" method="post">
+        <div
+        //  action="/api/login" method="post"
+        >
           <div class="container">
             <label for="uname">
               <b>Username</b>
@@ -42,6 +96,7 @@ class App extends React.Component {
               type="text"
               placeholder="Enter Username"
               name="uname"
+              id="uname"
               required
             />
 
@@ -52,10 +107,16 @@ class App extends React.Component {
               type="password"
               placeholder="Enter Password"
               name="password"
+              id="password"
               required
             />
 
-            <button type="submit">Login</button>
+            <button
+              // type="submit"
+              onClick={this.onSubmit}
+            >
+              Login
+            </button>
           </div>
 
           <div class="container">
@@ -73,7 +134,7 @@ class App extends React.Component {
 
             {this.state.inscription ? <Inscription /> : null}
           </div>
-        </form>
+        </div>
       </div>
     );
   }

@@ -4,6 +4,7 @@ import ch.qos.logback.core.encoder.EchoEncoder;
 
 import javax.persistence.*;
 import java.util.Objects;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 @Entity
 public class User {
@@ -22,6 +23,11 @@ public class User {
         this.token = token;
     }
 
+    public User(String userName, String password) {
+        this.userName  = userName;
+        this.password = password;
+    }
+
     public String getUser() {
         return userName;
     }
@@ -32,6 +38,10 @@ public class User {
 
     public String getToken() {
         return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override
