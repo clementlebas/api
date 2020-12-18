@@ -99,7 +99,7 @@ public class JWebToken {
         return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 
-    private static String decode(String encodedString) {
+    public String decode(String encodedString) {
         return new String(Base64.getUrlDecoder().decode(encodedString));
     }
 

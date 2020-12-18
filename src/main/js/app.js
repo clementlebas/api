@@ -51,7 +51,7 @@ class App extends React.Component {
         response.json().then(function (responseData) {
           console.log("login data", responseData);
           if (responseData.token) {
-            window.location.href = "http://localhost:4000/api/sondage/";
+            window.location.href = "http://localhost:4000/api/survey/";
             sessionStorage.setItem('token', responseData.token);
           }
             else

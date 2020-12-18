@@ -1,7 +1,7 @@
 var path = require("path");
 
 module.exports = {
-  entry: {bundle: "./src/main/js/app.js", survey: "./src/main/js/sondage.js"},
+  entry: {bundle: "./src/main/js/app.js", survey: "./src/main/js/survey.js"},
   devtool: "sourcemaps",
   cache: true,
   mode: "development",
