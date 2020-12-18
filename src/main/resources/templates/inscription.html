@@ -6,10 +6,14 @@
     <link rel="stylesheet" href="/main.css" />
 </head>
 <body>
-<div th:text="${message}" />
-<div>Retour</div>
 
-<button type="button" onClick={window.history.back()}><---</button>
+<div  className="header">
+
+    <div th:text="${message}" />
+    <div>Retour</div>
+
+    <button type="button" onClick={window.history.back()}><---</button>
+</div>
 
 </body>
 </html>

@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "../style/main.css";
+import "../resources/static/main.css";
 import Inscription from "./inscription";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { users: [], inscription: false };
+    this.state = { users: [], userCreated: false };
   }
 
   componentDidMount() {
@@ -30,20 +30,15 @@ class App extends React.Component {
     });
   }
 
-  onSubmit() {
+  onSubmitConnection() {
     const myHeaders = new Headers({
       "Content-Type": "application/json",
       Accept: "application/json",
       "Access-Control-Allow-Headers": "*",
     });
 
-    const formData = new FormData();
-
     const uname = document.getElementById("uname").value;
     const password = document.getElementById("password").value;
-
-    formData.append("uname", uname);
-    formData.append("password", password);
 
     fetch("/api/login/", {
       method: "POST",
@@ -53,31 +48,15 @@ class App extends React.Component {
       body: JSON.stringify({ uname: uname, password: password }),
     }).then((response) => {
       if (response.ok) {
-        response.json().then(function (data) {
-          console.log("login data", data);
-          const myHeaders = new Headers({
-            "Content-Type": "text/html; charset=utf-8",
-            Accept: "application/json, text/javascript, */*; q=0.01",
-            Authorization: `Bearer ${data.token}`,
-          });
-
-          const params = {
-            method: "GET",
-            headers: myHeaders,
-          };
-          fetch("/api/sondage", params).then((response) => {
-            if (response.ok) {
-              response.json().then(function (data) {
-                console.log("data", data);
-              });
-              window.location = "http://localhost:4000/api/sondage/";
-              // this.setState({ users: response.json() });
-              // console.log("users", this.state.users);
-            }
-          });
+        response.json().then(function (responseData) {
+          console.log("login data", responseData);
+          if (responseData.token) {
+            window.location.href = "http://localhost:4000/api/sondage/";
+            sessionStorage.setItem('token', responseData.token);
+          }
+            else
+              window.location.href = "http://localhost:4000/api/";
         });
-        // this.setState({ users: response.json() });
-        // console.log("users", this.state.users);
       }
     });
   }
@@ -85,54 +64,37 @@ class App extends React.Component {
   render() {
     return (
       <div className="app">
-        <div
-        //  action="/api/login" method="post"
-        >
-          <div class="container">
-            <label for="uname">
-              <b>Username</b>
-            </label>
+        <div className="wrapper">
+
+          <div class="loginContainer">
+          <h1>Connexion</h1>
             <input
               type="text"
-              placeholder="Enter Username"
+              placeholder="Username"
+              className="inputIndex"
               name="uname"
               id="uname"
               required
             />
-
-            <label for="password">
-              <b>Password</b>
-            </label>
             <input
               type="password"
-              placeholder="Enter Password"
+              placeholder="Password"
+              placeholder="Password"
+              className="inputIndex"
               name="password"
+              className="inputIndex"
               id="password"
               required
             />
 
-            <button
-              // type="submit"
-              onClick={this.onSubmit}
-            >
+            <button onClick={this.onSubmitConnection}>
               Login
             </button>
           </div>
 
-          <div class="container">
-            <button
-              type="button"
-              onClick={() => {
-                console.log("this.state.inscription", this.state.inscription);
-                this.setState({
-                  inscription: !this.state.inscription,
-                });
-              }}
-            >
-              Create user
-            </button>
-
-            {this.state.inscription ? <Inscription /> : null}
+          <div class="loginContainer">
+            <Inscription />
+            {this.state.userCreated ? "utilisateur créé" : ""}
           </div>
         </div>
       </div>

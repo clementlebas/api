@@ -1,3 +1,86 @@
-#react {
+*{
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-weight: 300;
+}
 
+#react {
+    background: linear-gradient(to bottom right, #50a3a2 0%, #53e3a6 100%);
+}
+
+.app {
+  width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+}
+
+h1 {
+    font-size: 18px;
+    transition-duration: 1s;
+    transition-timing-function: ease-in-put;
+    font-weight: 200;
+    color: white;
+    padding: 20px;
+}
+
+.wrapper {
+    display: flex;
+}
+
+input {
+    display: block;
+    width: 250px;
+
+    border-radius: 3px;
+    border: 1px solid grey;
+    padding: 10px 15px;
+    margin: 0 auto 10px auto;
+    text-align: center;
+    font-size: 18px;
+
+    &:hover{
+        background-color: fade(white, 40%);
+    }
+
+    &:focus{
+        background-color: white;
+        width: 300px;
+    }
+}
+
+.loginContainer {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 80px 0;
+    height: 400px;
+    text-align: center;
+}
+
+button {
+    background-color: white;
+    border: 0;
+    padding: 10px 15px;
+    border-radius: 3px;
+    width: 250px;
+    cursor: pointer;
+    font-size: 18px;
+    transition-duration: 0.25s;
+
+    &:hover{
+        background-color: rgb(245, 247, 249);
+    }
+}
+
+.surveyButton {
+    margin: 5px;
+    border: 1px solid slategray;
+
+}
+
+.surveyWrapper {
+  width: 540px;
+  margin-left: auto;
+  margin-right: auto;
 }

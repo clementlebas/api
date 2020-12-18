@@ -14,6 +14,7 @@ public class User {
     private String userName ;
     private String password;
     private String token;
+    private Boolean active;
 
     private User() {}
 
@@ -21,11 +22,14 @@ public class User {
         this.userName  = userName;
         this.password = password;
         this.token = token;
+        this.active = false;
+        //this.mySurvey
     }
 
-    public User(String userName, String password) {
+    public User(String userName, String password, Boolean active) {
         this.userName  = userName;
         this.password = password;
+        this.active = active;
     }
 
     public String getUser() {
@@ -40,8 +44,16 @@ public class User {
         return token;
     }
 
+    public Boolean getActive() {
+        return active;
+    }
+
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     @Override

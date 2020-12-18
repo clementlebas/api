@@ -6,10 +6,15 @@
     <link rel="stylesheet" href="/main.css" />
 </head>
 <body>
+    <div style="background: linear-gradient(to bottom right, #50a3a2 0%, #53e3a6 100%);
+             padding: 30px;">
+        <div style="
+             font-size: 50px;"
+             th:text="${welcome}"/>
+    </div>
+    <div id="survey"></div>
 
-<div> Utilisateur connecté !</div>
-<div> Page Sondage </div>
-
+<script src="/built/survey.js"></script>
 
 </body>
 </html>

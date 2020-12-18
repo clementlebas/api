@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "../style/main.css";
+import "../resources/static/main.css";
 
 class Inscrption extends React.Component {
   constructor(props) {
@@ -51,41 +51,41 @@ class Inscrption extends React.Component {
 
   render() {
     return (
-      <div className="app">
+      <div>
         <form
           action="/api/inscription"
           method="post"
           enctype="application/x-www-form-urlencoded"
           id="signupForm"
         >
-          <fieldset>
-            <legend>Création d'un compte utilisateur</legend>
-
+            <h1>Création d'un compte utilisateur</h1>
             <input
               type="text"
-              placeholder="Entrer un nom d'utilisateur"
+              placeholder="Entrez un nom d'utilisateur"
               name="uname"
               id="createuname"
+              className="inputIndex"
               required
             />
             <input
               type="password"
-              placeholder="Password"
+              placeholder="Entrez un mot de passe"
               id="createpassword"
               name="password"
+              className="inputIndex"
               onChange={this.validatePassword}
               required
             />
             <input
               type="password"
-              placeholder="Confirm Password"
+              placeholder="Confirmez le mot de passe"
               id="confirm_password"
               onKeyUp={this.validatePassword}
+              className="inputIndex"
               required
             />
 
             <button type="submit">Confirm</button>
-          </fieldset>
         </form>
       </div>
     );

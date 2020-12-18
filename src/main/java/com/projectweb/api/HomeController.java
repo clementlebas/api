@@ -3,6 +3,11 @@ package com.projectweb.api;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
@@ -16,12 +21,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 
 @Controller
 public class HomeController {
-
 
     private static final int EXPIRY_DAYS = 90;
 
@@ -34,14 +41,30 @@ public class HomeController {
     }
 
     @GetMapping(value = "/api/sondage")
-    public String getSondage() {
+    public ModelAndView getSondage() throws NoSuchAlgorithmException {
+        /*Query query = this.sessionFactory.getCurrentSession().createQuery("SELECT COUNT(*) FROM Users WHERE emailID = :email_ID OR mobileNo = :mobile_No");
+        query.setString("email_ID", user.getEmailID());
+        query.setString("mobile_No", user.getMobileNo());*/
+        System.out.println("sondage");
 
-        return "sondage";
+        ModelAndView modelAndView = new ModelAndView("sondage");
+        for (User u : repository.findByActiveTrue()) {
+            JWebToken decodedToken = new JWebToken(u.getToken());
+
+            System.out.println(u.toString() + " toString");
+            modelAndView.addObject("welcome", "Bienvenue " + u.getUser());
+        }
+
+
+
+
+
+        return modelAndView;
     }
 
-    @RequestMapping(value = "/api/login",  method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/api/login",  method = RequestMethod.POST)
     @ResponseBody
-    public Message generateToken(@RequestBody Map<String, Object> payload) {
+    public void generateTokenAndConnect(HttpServletResponse response, @RequestBody Map<String, Object> payload) throws IOException {
         String uname = payload.get("uname").toString();
         String password = payload.get("password").toString();
 
@@ -52,21 +75,21 @@ public class HomeController {
         Authentication auth = new UsernamePasswordAuthenticationToken(uname, password);
         auth.isAuthenticated();
         SecurityContextHolder.getContext().setAuthentication(auth);
-        System.out.println("auth" + auth);
 
         for (User u : repository.findByUserName(uname)) {
 
             if (u.getPassword().equals(password)) {
                 System.out.println(u.getUser() + " connection");
+                User connectingUser = repository.findById(u.id).get();
+                u.setActive(true);
+
 
 
                 JSONObject jwtPayload = new JSONObject();
                 jwtPayload.put("status", 0);
-
                 JSONArray audArray = new JSONArray();
                 audArray.put("admin");
                 jwtPayload.put("sub", u.getUser());
-
                 jwtPayload.put("aud", audArray);
                 LocalDateTime ldt = LocalDateTime.now().plusDays(EXPIRY_DAYS);
                 jwtPayload.put("exp", ldt.toEpochSecond(ZoneOffset.UTC));
@@ -75,13 +98,24 @@ public class HomeController {
                 u.setToken(token.toString());
 
                 token.isValid();
-
                 System.out.println(token);
 
-                return new Message(u.getToken());
+                repository.save(connectingUser);
+
+
+                JSONObject jsonResponse = new JSONObject();
+                jsonResponse.put("token", token.toString());
+
+                response.setContentType("application/json");
+                PrintWriter out = response.getWriter();
+
+                out.print(jsonResponse);
+
+                out.flush();
+
             }
+
         }
-        return new Message("Not found");
     }
 
     /*@RequestMapping(value = "/api/login")
@@ -102,7 +136,7 @@ public class HomeController {
             }
         }
         modelAndView.addObject("message", "Utilisateur créé ! Vous pouvez vous connecter");
-        repository.save(new User(uname, password));
+        repository.save(new User(uname, password, false));
         return modelAndView;
     }
 

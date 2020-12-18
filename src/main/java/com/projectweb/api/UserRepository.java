@@ -7,5 +7,7 @@ import java.util.List;
 public interface UserRepository extends CrudRepository<User, Long> {
     List<User> findByUserName(String uname);
     List<User> findByToken(String token);
+    List<User> findByActiveTrue();
+    List<User> findByActiveFalse();
 }
 

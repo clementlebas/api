@@ -2,14 +2,14 @@ package com.projectweb.api;
 
 //Exemple de POJO
 public class Message {
-    private final String token;
+    private final String message;
 
-    public Message(String token) {
-        this.token = token;
+    public Message(String message) {
+        this.message = message;
 
     }
 
-    public String getToken() {
-        return token;
+    public String getMessage() {
+        return message;
     }
 }
