@@ -1,10 +1,8 @@
 package com.projectweb.api;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 
 import javax.persistence.*;
 import java.util.Objects;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 @Entity
 public class User {

@@ -7,12 +7,11 @@
 </head>
 <body>
 
-<div  className="header">
+<div style="background: #50a3a2; width: 800px; margin-left: auto; margin-right: auto; padding: 20px;">
 
-    <div th:text="${message}" />
-    <div>Retour</div>
-
-    <button type="button" onClick={window.history.back()}><---</button>
+    <div style="margin-left: 240px;" th:text="${message}" />
+    <br/>
+    <button style="margin-left: 250px;" className="surveyButton" type="button" onClick={window.history.back()}><---</button>
 </div>
 
 </body>

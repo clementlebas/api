@@ -49,6 +49,24 @@ class Survey extends React.Component {
     });
   }
 
+  disconnect() {
+
+
+    const myHeaders = new Headers({
+      "Content-Type": "text/html; charset=utf-8",
+    });
+
+    fetch("/api/disconnect", {
+      method: "GET",
+      headers: myHeaders,
+      credentials: "same-origin",
+      mode: "same-origin",
+    }).then(() => {
+      window.location.href = "http://localhost:4000/api";
+      sessionStorage.removeItem("token");
+    });
+  }
+
   render() {
     console.log("this.state.userSurvey", this.state.userSurvey);
 
@@ -66,6 +84,17 @@ class Survey extends React.Component {
             <JsonToTable json={this.state.userSurvey} />
           )}
         </div>
+        <button
+          onClick={this.disconnect}
+          style={{
+            backgroundColor: "rgba(255, 49, 74, 0.51)",
+            margin: "20px",
+            marginLeft: "120px",
+          }}
+          className="surveyButton"
+        >
+          Se déconnecter
+        </button>
       </div>
     );
   }

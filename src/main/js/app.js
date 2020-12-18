@@ -19,6 +19,7 @@ class App extends React.Component {
       method: "GET",
       headers: myHeaders,
     };
+
     fetch("/api/users", params).then((response) => {
       if (response.ok) {
         response.json().then(function (data) {

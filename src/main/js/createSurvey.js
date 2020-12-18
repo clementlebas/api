@@ -94,13 +94,13 @@ class CreateSurvey extends React.Component {
                </div>
            </form>
            <button className="surveyButton" onClick={ () => this.addQuestion() }>
-               ADD A QUESTION
+               AJOUTER QUESTION
            </button>
            <button className="surveyButton" onClick={ () => this.removeQuestion() }>
-               REMOVE A QUESTION
+               EFFACER QUESTION
            </button>
            <button className="surveyButton" style={{marginLeft: '120px'}}onClick={ () => this.validSurvey() }>
-             Valid survey
+             Valider sondage
           </button>
         </div>
       </div>

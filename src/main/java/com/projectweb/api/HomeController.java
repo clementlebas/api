@@ -207,4 +207,18 @@ public class HomeController {
         repository.save(new User(uname, password, false));
         return modelAndView;
     }
+
+    @GetMapping(value = "/api/disconnect")
+    public String disconnect() {
+        User connectingUser = repository.findByActiveTrue();
+        System.out.println("connectingUser" + connectingUser);
+        if (connectingUser != null) {
+            connectingUser.setActive(false);
+            connectingUser.setToken("");
+            repository.save(connectingUser);
+        }
+
+        System.out.println("repository.findByActiveTrue()" + repository.findByActiveTrue());
+        return "index";
+    }
 }
