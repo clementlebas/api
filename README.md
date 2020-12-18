@@ -18,31 +18,31 @@ Si le front ne s'affiche pas:
 ![api](./docs/api.png)
 
 - GET /api/users
-![users](./docs/users.png)
+![users](./docs/users.PNG)
 
 - POST /api/login
-![login](./docs/loginreq.png)
-![reponselog](./docs/reponselog.png)
+![login](./docs/loginreq.PNG)
+![reponselog](./docs/reponselog.PNG)
 
 - POST /api/inscription
-![inscription](./docs/inscription.png)
+![inscription](./docs/inscription.PNG)
 
 - POST /api/inscription (user already exist)
-![inscription2](./docs/inscription2.png)
+![inscription2](./docs/inscription2.PNG)
 
 - GET /api/disconnect
-![inscription2](./docs/inscription2.png)
+![inscription2](./docs/inscription2.PNG)
 
 ##### Détails navigation API Sondage:
 
 - GET /api/survey
-![survey](./docs/survey.png)
+![survey](./docs/survey.PNG)
 
 - POST /api/survey/create
-![create](./docs/create.png)
-![createj](./docs/createj.png)
+![create](./docs/create.PNG)
+![createj](./docs/createj.PNG)
 
 - GET /api/survey/mysurvey 
-![mysurvey](./docs/mysurvey.png)
-![mysurveyj](./docs/mysurveyj.png)
+![mysurvey](./docs/mysurvey.PNG)
+![mysurveyj](./docs/mysurveyj.PNG)
 
